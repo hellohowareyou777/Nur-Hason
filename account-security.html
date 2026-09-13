@@ -1,0 +1,71 @@
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Account Security - Nur Hason</title>
+</head>
+
+<body>
+
+    <h1>🔒 Account Security</h1>
+
+    <h3>Account Security Settings</h3>
+
+    <p>👤 Username: admin</p>
+
+    <p>🔐 Login Protection: Enabled</p>
+
+    <p>🛡️ Account Status: Protected</p>
+
+    <hr>
+
+    <button type="button" id="checkSecurityButton">
+        🔄 Check Security
+    </button>
+
+    <p id="result"></p>
+
+    <br>
+
+    <button type="button" onclick="goBack()">
+        ⬅️ Security
+    </button>
+
+    <button type="button" onclick="goHome()">
+        🏠 Home
+    </button>
+
+
+    <script>
+
+        document.getElementById("checkSecurityButton")
+            .addEventListener("click", function () {
+
+                document.getElementById("result").innerText =
+                    "✅ Account security is active.";
+
+            });
+
+
+        function goBack() {
+
+            window.location.href =
+                "security.html";
+
+        }
+
+
+        function goHome() {
+
+            window.location.href =
+                "home.html";
+
+        }
+
+    </script>
+
+</body>
+
+</html>
+```

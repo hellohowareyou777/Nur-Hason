@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Starred - Nur Hason</title>
+</head>
+
+<body>
+
+    <h1>⭐ Starred</h1>
+
+    <div id="starredList"></div>
+
+    <br>
+
+    <button onclick="goHome()">🏠 Home</button>
+
+    <script src="storage.js"></script>
+
+    <script>
+
+        async function showStarred() {
+
+            let list =
+                document.getElementById("starredList");
+
+            let files =
+                await getStarredFiles();
+
+            list.innerHTML = "";
+
+            if (files.length === 0) {
+
+                list.innerHTML =
+                    "<p>⭐ No starred files yet.</p>";
+
+                return;
+            }
+
+            for (let item of files) {
+
+                let div =
+                    document.createElement("div");
+
+                div.innerHTML =
+                    "⭐ <strong>" +
+                    item.name +
+                    "</strong><br>" +
+                    "Size: " +
+                    Math.round(item.size / 1024) +
+                    " KB";
+
+                list.appendChild(div);
+
+                list.appendChild(
+                    document.createElement("hr")
+                );
+            }
+        }
+
+
+        function goHome() {
+            window.location.href = "home.html";
+        }
+
+
+        window.onload = function () {
+            showStarred();
+        };
+
+    </script>
+
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Notifications - Nur Hason</title>
+</head>
+
+<body>
+
+    <h1>🔔 Notifications / বিজ্ঞপ্তি</h1>
+
+    <h3>Notification Settings</h3>
+
+    <label>
+        <input type="checkbox" id="fileNotification" checked>
+        📁 File Notifications
+    </label>
+
+    <br><br>
+
+    <label>
+        <input type="checkbox" id="securityNotification" checked>
+        🔐 Security Notifications
+    </label>
+
+    <br><br>
+
+    <label>
+        <input type="checkbox" id="storageNotification" checked>
+        💾 Storage Notifications
+    </label>
+
+    <br><br>
+
+    <button onclick="saveSettings()">💾 Save Settings</button>
+
+    <p id="result"></p>
+
+    <br>
+
+    <button onclick="goHome()">🏠 Home</button>
+
+    <script>
+
+        function saveSettings() {
+
+            let fileNotification =
+                document.getElementById("fileNotification").checked;
+
+            let securityNotification =
+                document.getElementById("securityNotification").checked;
+
+            let storageNotification =
+                document.getElementById("storageNotification").checked;
+
+            localStorage.setItem(
+                "fileNotification",
+                fileNotification
+            );
+
+            localStorage.setItem(
+                "securityNotification",
+                securityNotification
+            );
+
+            localStorage.setItem(
+                "storageNotification",
+                storageNotification
+            );
+
+            document.getElementById("result").innerText =
+                "✅ Notification settings saved.";
+        }
+
+        function goHome() {
+            window.location.href = "home.html";
+        }
+
+    </script>
+
+</body>
+
+</html>

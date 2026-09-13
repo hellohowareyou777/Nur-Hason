@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Storage Settings - Nur Hason</title>
+</head>
+
+<body>
+
+    <h1>☁️ Storage Settings</h1>
+
+    <h3>Storage Information</h3>
+
+    <p>💾 Total Storage: 30 GB</p>
+
+    <p>📁 Used Storage: 0 GB</p>
+
+    <p>🟢 Available Storage: 30 GB</p>
+
+    <br>
+
+    <h3>Storage Options</h3>
+
+    <button onclick="showMessage()">🔄 Refresh Storage</button>
+
+    <p id="result"></p>
+
+    <br>
+
+    <button onclick="goHome()">🏠 Home</button>
+
+    <script>
+
+        function showMessage() {
+            document.getElementById("result").innerText =
+                "✅ Storage information updated.";
+        }
+
+        function goHome() {
+            window.location.href = "home.html";
+        }
+
+    </script>
+
+</body>
+
+</html>

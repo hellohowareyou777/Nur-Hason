@@ -1,0 +1,388 @@
+```html
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Recent - Nur Hason</title>
+</head>
+
+<body>
+
+    <h1>🕘 Recent Files</h1>
+
+    <p id="result"></p>
+
+    <h3>🔎 Search Recent Files</h3>
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Enter file name..."
+        oninput="showRecent()"
+    >
+
+    <br><br>
+
+    <label>
+        Sort:
+        <select id="sortOption" onchange="showRecent()">
+            <option value="newest">🆕 Newest First</option>
+            <option value="oldest">🕰️ Oldest First</option>
+            <option value="name">🔤 Name A-Z</option>
+            <option value="size">📦 Size</option>
+        </select>
+    </label>
+
+    <hr>
+
+    <div id="recentList"></div>
+
+    <br>
+
+    <button onclick="goHome()">
+        🏠 Home
+    </button>
+
+    <script src="storage.js"></script>
+    <script src="language.js"></script>
+
+    <script>
+
+        async function showRecent() {
+
+            const recentList =
+                document.getElementById("recentList");
+
+            const searchInput =
+                document.getElementById("searchInput");
+
+            const sortOption =
+                document.getElementById("sortOption");
+
+            recentList.innerHTML = "";
+
+            try {
+
+                const files =
+                    await getAllFiles();
+
+                let recentFiles =
+                    files.filter(function (item) {
+
+                        return item.deleted !== true;
+
+                    });
+
+
+                const searchText =
+                    searchInput.value
+                        .toLowerCase()
+                        .trim();
+
+
+                if (searchText !== "") {
+
+                    recentFiles =
+                        recentFiles.filter(function (item) {
+
+                            return item.name
+                                .toLowerCase()
+                                .includes(searchText);
+
+                        });
+                }
+
+
+                if (sortOption.value === "newest") {
+
+                    recentFiles.sort(function (a, b) {
+
+                        return new Date(b.date) -
+                            new Date(a.date);
+
+                    });
+
+                }
+
+                else if (sortOption.value === "oldest") {
+
+                    recentFiles.sort(function (a, b) {
+
+                        return new Date(a.date) -
+                            new Date(b.date);
+
+                    });
+
+                }
+
+                else if (sortOption.value === "name") {
+
+                    recentFiles.sort(function (a, b) {
+
+                        return a.name.localeCompare(
+                            b.name
+                        );
+
+                    });
+
+                }
+
+                else if (sortOption.value === "size") {
+
+                    recentFiles.sort(function (a, b) {
+
+                        return b.size - a.size;
+
+                    });
+                }
+
+
+                if (searchText === "") {
+
+                    recentFiles =
+                        recentFiles.slice(0, 10);
+
+                }
+
+
+                if (recentFiles.length === 0) {
+
+                    recentList.innerHTML =
+                        "<p>🕘 No recent files found.</p>";
+
+                    return;
+                }
+
+
+                for (let item of recentFiles) {
+
+                    const div =
+                        document.createElement("div");
+
+                    const date =
+                        new Date(item.date);
+
+
+                    div.innerHTML =
+                        "📄 <strong>" +
+                        item.name +
+                        "</strong><br><br>" +
+
+                        "📦 Size: " +
+                        formatSize(item.size) +
+                        "<br>" +
+
+                        "📅 Added: " +
+                        date.toLocaleString() +
+                        "<br>" +
+
+                        "⭐ Status: " +
+                        (
+                            item.starred
+                                ? "Starred"
+                                : "Not Starred"
+                        ) +
+
+                        "<br><br>";
+
+
+                    const openButton =
+                        document.createElement("button");
+
+                    openButton.innerText =
+                        "👁️ Open";
+
+                    openButton.onclick =
+                        function () {
+
+                            openFile(item);
+
+                        };
+
+
+                    div.appendChild(openButton);
+
+                    div.appendChild(
+                        document.createTextNode(" ")
+                    );
+
+
+                    const downloadButton =
+                        document.createElement("button");
+
+                    downloadButton.innerText =
+                        "⬇️ Download";
+
+                    downloadButton.onclick =
+                        function () {
+
+                            downloadFile(item);
+
+                        };
+
+
+                    div.appendChild(downloadButton);
+
+                    div.appendChild(
+                        document.createTextNode(" ")
+                    );
+
+
+                    const starButton =
+                        document.createElement("button");
+
+                    starButton.innerText =
+                        item.starred
+                            ? "⭐ Unstar"
+                            : "☆ Star";
+
+                    starButton.onclick =
+                        async function () {
+
+                            await toggleStar(item.id);
+
+                            showRecent();
+
+                        };
+
+
+                    div.appendChild(starButton);
+
+                    div.appendChild(
+                        document.createTextNode(" ")
+                    );
+
+
+                    const deleteButton =
+                        document.createElement("button");
+
+                    deleteButton.innerText =
+                        "🗑️ Delete";
+
+                    deleteButton.onclick =
+                        async function () {
+
+                            await moveToTrash(item.id);
+
+                            document.getElementById(
+                                "result"
+                            ).innerText =
+                                "🗑️ File moved to Trash.";
+
+                            showRecent();
+
+                        };
+
+
+                    div.appendChild(deleteButton);
+
+                    div.appendChild(
+                        document.createElement("hr")
+                    );
+
+                    recentList.appendChild(div);
+                }
+
+            }
+
+            catch (error) {
+
+                document.getElementById(
+                    "result"
+                ).innerText =
+                    "❌ Recent files could not be loaded.";
+
+                console.error(error);
+            }
+        }
+
+
+        function formatSize(bytes) {
+
+            if (bytes < 1024)
+
+                return bytes + " Bytes";
+
+
+            if (bytes < 1024 * 1024)
+
+                return Math.round(
+                    bytes / 1024
+                ) + " KB";
+
+
+            if (bytes < 1024 * 1024 * 1024)
+
+                return (
+                    bytes /
+                    (1024 * 1024)
+                ).toFixed(2) + " MB";
+
+
+            return (
+                bytes /
+                (1024 * 1024 * 1024)
+            ).toFixed(2) + " GB";
+        }
+
+
+        function openFile(item) {
+
+            const url =
+                URL.createObjectURL(item.file);
+
+            window.open(
+                url,
+                "_blank"
+            );
+        }
+
+
+        function downloadFile(item) {
+
+            const url =
+                URL.createObjectURL(item.file);
+
+            const link =
+                document.createElement("a");
+
+            link.href = url;
+
+            link.download =
+                item.name;
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            link.remove();
+
+            setTimeout(function () {
+
+                URL.revokeObjectURL(url);
+
+            }, 1000);
+        }
+
+
+        function goHome() {
+
+            window.location.href =
+                "home.html";
+        }
+
+
+        window.onload =
+            function () {
+
+                showRecent();
+
+            };
+
+    </script>
+
+</body>
+
+</html>
+```

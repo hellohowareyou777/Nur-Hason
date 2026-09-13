@@ -1,0 +1,67 @@
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Language - Nur Hason</title>
+</head>
+
+<body>
+
+    <h1>🌐 Language</h1>
+
+    <h3>Select Language</h3>
+
+    <label>
+        <input type="radio" name="language" value="en" checked>
+        🇬🇧 English
+    </label>
+
+    <br><br>
+
+    <button type="button" onclick="saveLanguage()">
+        💾 Save Language
+    </button>
+
+    <p id="result"></p>
+
+    <hr>
+
+    <button type="button" onclick="goHome()">
+        🏠 Home
+    </button>
+
+    <script src="language.js"></script>
+
+    <script>
+        function saveLanguage() {
+            localStorage.setItem("language", "en");
+
+            document.getElementById("result").innerText =
+                "✅ English selected successfully.";
+
+            applyEnglish();
+        }
+
+        function loadLanguage() {
+            localStorage.setItem("language", "en");
+
+            document.querySelector(
+                'input[value="en"]'
+            ).checked = true;
+        }
+
+        function goHome() {
+            window.location.href = "home.html";
+        }
+
+        window.onload = function () {
+            loadLanguage();
+            applyEnglish();
+        };
+    </script>
+
+</body>
+
+</html>
+```

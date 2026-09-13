@@ -1,0 +1,142 @@
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Backup & Restore - Nur Hason</title>
+</head>
+
+<body>
+
+    <h1>💾 Backup & Restore</h1>
+
+    <h3>Backup</h3>
+
+    <p>Keep a backup of your important files.</p>
+
+    <button type="button" onclick="createBackup()">
+        💾 Create Backup
+    </button>
+
+    <p id="backupResult"></p>
+
+    <hr>
+
+    <h3>Restore</h3>
+
+    <p>Restore files from a previous backup.</p>
+
+    <button type="button" onclick="restoreBackup()">
+        🔄 Restore Backup
+    </button>
+
+    <p id="restoreResult"></p>
+
+    <br>
+
+    <button type="button" onclick="goHome()">
+        🏠 Home
+    </button>
+
+    <script src="storage.js"></script>
+    <script src="language.js"></script>
+
+    <script>
+
+        async function createBackup() {
+
+            try {
+
+                const files =
+                    await getAllFiles();
+
+                const backupData =
+                    files.map(function (item) {
+
+                        return {
+                            id: item.id,
+                            name: item.name,
+                            type: item.type,
+                            size: item.size,
+                            date: item.date,
+                            starred: item.starred,
+                            deleted: item.deleted
+                        };
+
+                    });
+
+                const data =
+                    JSON.stringify(
+                        backupData,
+                        null,
+                        2
+                    );
+
+                const blob =
+                    new Blob(
+                        [data],
+                        {
+                            type: "application/json"
+                        }
+                    );
+
+                const url =
+                    URL.createObjectURL(blob);
+
+                const link =
+                    document.createElement("a");
+
+                link.href = url;
+
+                link.download =
+                    "Nur-Hason-Backup.json";
+
+                document.body.appendChild(link);
+
+                link.click();
+
+                link.remove();
+
+                URL.revokeObjectURL(url);
+
+                document.getElementById(
+                    "backupResult"
+                ).innerText =
+                    "✅ Backup created successfully.";
+
+            }
+
+            catch (error) {
+
+                document.getElementById(
+                    "backupResult"
+                ).innerText =
+                    "❌ Backup could not be created.";
+
+                console.error(error);
+            }
+        }
+
+
+        function restoreBackup() {
+
+            document.getElementById(
+                "restoreResult"
+            ).innerText =
+                "ℹ️ Select a Nur Hason backup file to restore.";
+
+        }
+
+
+        function goHome() {
+
+            window.location.href =
+                "home.html";
+        }
+
+    </script>
+
+</body>
+
+</html>
+```

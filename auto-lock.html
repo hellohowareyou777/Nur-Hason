@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Auto Lock - Nur Hason</title>
+</head>
+
+<body>
+
+    <h1>⏱️ Auto Lock</h1>
+
+    <h3>Auto Lock Settings</h3>
+
+    <label>
+        <input type="checkbox" id="autoLock">
+        🔒 Enable Auto Lock
+    </label>
+
+    <br><br>
+
+    <label>
+        Lock after:
+        <select id="lockTime">
+            <option value="1">1 minute</option>
+            <option value="5">5 minutes</option>
+            <option value="10">10 minutes</option>
+            <option value="30">30 minutes</option>
+        </select>
+    </label>
+
+    <br><br>
+
+    <button onclick="saveSettings()">
+        💾 Save Settings
+    </button>
+
+    <p id="result"></p>
+
+    <hr>
+
+    <button onclick="goBack()">⬅️ Security</button>
+
+    <button onclick="goHome()">🏠 Home</button>
+
+    <script>
+
+        function saveSettings() {
+
+            let enabled =
+                document.getElementById("autoLock").checked;
+
+            let time =
+                document.getElementById("lockTime").value;
+
+            localStorage.setItem(
+                "autoLock",
+                enabled
+            );
+
+            localStorage.setItem(
+                "lockTime",
+                time
+            );
+
+            document.getElementById("result").innerText =
+                "✅ Auto Lock settings saved.";
+
+        }
+
+
+        function loadSettings() {
+
+            let enabled =
+                localStorage.getItem("autoLock");
+
+            let time =
+                localStorage.getItem("lockTime");
+
+            if (enabled === "true") {
+
+                document.getElementById("autoLock").checked =
+                    true;
+
+            }
+
+            if (time) {
+
+                document.getElementById("lockTime").value =
+                    time;
+
+            }
+
+        }
+
+
+        function goBack() {
+
+            window.location.href =
+                "security.html";
+
+        }
+
+
+        function goHome() {
+
+            window.location.href =
+                "home.html";
+
+        }
+
+
+        window.onload = function () {
+
+            loadSettings();
+
+        };
+
+    </script>
+
+</body>
+
+</html>

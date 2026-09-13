@@ -1,0 +1,134 @@
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Privacy - Nur Hason</title>
+</head>
+
+<body>
+
+    <h1>🛡️ Privacy</h1>
+
+    <h3>Privacy Settings</h3>
+
+    <label>
+        <input type="checkbox" id="privateMode">
+        🔒 Private Mode
+    </label>
+
+    <br><br>
+
+    <label>
+        <input type="checkbox" id="activity">
+        📊 Save Activity
+    </label>
+
+    <br><br>
+
+    <button type="button" id="saveButton">
+        💾 Save Privacy Settings
+    </button>
+
+    <p id="result"></p>
+
+    <hr>
+
+    <button type="button" onclick="goBack()">
+        ⬅️ Security
+    </button>
+
+    <button type="button" onclick="goHome()">
+        🏠 Home
+    </button>
+
+
+    <script>
+
+        function loadSettings() {
+
+            let privateMode =
+                localStorage.getItem("privateMode");
+
+            let activity =
+                localStorage.getItem("activity");
+
+
+            if (privateMode === null) {
+
+                document.getElementById("privateMode").checked =
+                    true;
+
+            } else {
+
+                document.getElementById("privateMode").checked =
+                    privateMode === "true";
+
+            }
+
+
+            if (activity === "true") {
+
+                document.getElementById("activity").checked =
+                    true;
+
+            }
+
+        }
+
+
+        document.getElementById("saveButton")
+            .addEventListener("click", function () {
+
+                let privateMode =
+                    document.getElementById("privateMode").checked;
+
+                let activity =
+                    document.getElementById("activity").checked;
+
+
+                localStorage.setItem(
+                    "privateMode",
+                    privateMode
+                );
+
+                localStorage.setItem(
+                    "activity",
+                    activity
+                );
+
+
+                document.getElementById("result").innerText =
+                    "✅ Privacy settings saved.";
+
+            });
+
+
+        function goBack() {
+
+            window.location.href =
+                "security.html";
+
+        }
+
+
+        function goHome() {
+
+            window.location.href =
+                "home.html";
+
+        }
+
+
+        window.onload = function () {
+
+            loadSettings();
+
+        };
+
+    </script>
+
+</body>
+
+</html>
+```

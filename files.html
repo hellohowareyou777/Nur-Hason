@@ -1,0 +1,234 @@
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>My Files - Nur Hason</title>
+</head>
+
+<body>
+
+    <h1>📁 My Files</h1>
+
+    <h3>Select Files:</h3>
+
+    <input type="file" id="fileInput" multiple>
+
+    <br><br>
+
+    <button onclick="uploadFiles()">
+        ⬆️ Add Files
+    </button>
+
+    <p id="result"></p>
+
+    <hr>
+
+    <h3>🔎 Search Files</h3>
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="Enter file name..."
+        oninput="showFiles()"
+    >
+
+    <br><br>
+
+    <h3>Saved Files</h3>
+
+    <div id="fileList"></div>
+
+    <br>
+
+    <button onclick="goHome()">
+        🏠 Home
+    </button>
+
+
+    <script src="storage.js"></script>
+    <script src="language.js"></script>
+
+    <script>
+
+        async function uploadFiles() {
+
+            const input =
+                document.getElementById("fileInput");
+
+            const files = input.files;
+
+            if (files.length === 0) {
+
+                document.getElementById("result").innerText =
+                    "❌ Please select at least one file.";
+
+                return;
+            }
+
+            for (let file of files) {
+                await saveFile(file);
+            }
+
+            document.getElementById("result").innerText =
+                "✅ Files saved successfully.";
+
+            input.value = "";
+
+            showFiles();
+        }
+
+
+        async function starFile(id) {
+
+            await toggleStar(id);
+
+            showFiles();
+        }
+
+
+        async function trashFile(id) {
+
+            await moveToTrash(id);
+
+            document.getElementById("result").innerText =
+                "🗑️ File moved to Trash.";
+
+            showFiles();
+        }
+
+
+        async function showFiles() {
+
+            const fileList =
+                document.getElementById("fileList");
+
+            const searchText =
+                document.getElementById("searchInput")
+                    .value
+                    .toLowerCase()
+                    .trim();
+
+            const files =
+                await getAllFiles();
+
+            fileList.innerHTML = "";
+
+            const activeFiles =
+                files.filter(function (item) {
+
+                    return item.deleted !== true;
+
+                });
+
+
+            const filteredFiles =
+                activeFiles.filter(function (item) {
+
+                    return item.name
+                        .toLowerCase()
+                        .includes(searchText);
+
+                });
+
+
+            if (filteredFiles.length === 0) {
+
+                if (searchText !== "") {
+
+                    fileList.innerHTML =
+                        "<p>🔎 No files found.</p>";
+
+                } else {
+
+                    fileList.innerHTML =
+                        "<p>📂 No files yet.</p>";
+                }
+
+                return;
+            }
+
+
+            for (let item of filteredFiles) {
+
+                let div =
+                    document.createElement("div");
+
+
+                div.innerHTML =
+                    "📄 <strong>" +
+                    item.name +
+                    "</strong><br>" +
+
+                    "Size: " +
+                    Math.round(item.size / 1024) +
+                    " KB<br><br>";
+
+
+                let starButton =
+                    document.createElement("button");
+
+                starButton.innerText =
+                    item.starred
+                        ? "⭐ Starred"
+                        : "☆ Star";
+
+                starButton.onclick =
+                    function () {
+
+                        starFile(item.id);
+
+                    };
+
+
+                let trashButton =
+                    document.createElement("button");
+
+                trashButton.innerText =
+                    "🗑️ Delete";
+
+                trashButton.onclick =
+                    function () {
+
+                        trashFile(item.id);
+
+                    };
+
+
+                div.appendChild(starButton);
+
+                div.appendChild(
+                    document.createTextNode(" ")
+                );
+
+                div.appendChild(trashButton);
+
+                div.appendChild(
+                    document.createElement("hr")
+                );
+
+                fileList.appendChild(div);
+            }
+        }
+
+
+        function goHome() {
+
+            window.location.href =
+                "home.html";
+        }
+
+
+        window.onload =
+            function () {
+
+                showFiles();
+
+            };
+
+    </script>
+
+</body>
+
+</html>
+```

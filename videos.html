@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Videos - Nur Hason</title>
+</head>
+
+<body>
+
+    <h1>🎬 Videos</h1>
+
+    <h3>Select Videos:</h3>
+
+    <input type="file"
+           id="videoInput"
+           accept="video/*"
+           multiple>
+
+    <br><br>
+
+    <button onclick="saveVideos()">⬆️ Add Videos</button>
+
+    <p id="result"></p>
+
+    <hr>
+
+    <h3>Saved Videos</h3>
+
+    <div id="videoList"></div>
+
+    <br>
+
+    <button onclick="goHome()">🏠 Home</button>
+
+    <script src="storage.js"></script>
+
+    <script>
+
+        async function saveVideos() {
+
+            let input =
+                document.getElementById("videoInput");
+
+            let files = input.files;
+
+            if (files.length === 0) {
+
+                document.getElementById("result").innerText =
+                    "❌ আগে একটি video নির্বাচন করুন।";
+
+                return;
+            }
+
+            for (let file of files) {
+                await saveFile(file);
+            }
+
+            document.getElementById("result").innerText =
+                "✅ Videos saved successfully.";
+
+            input.value = "";
+
+            showVideos();
+        }
+
+
+        async function showVideos() {
+
+            let videoList =
+                document.getElementById("videoList");
+
+            let files = await getAllFiles();
+
+            videoList.innerHTML = "";
+
+            let videos = files.filter(function (item) {
+                return item.type.startsWith("video/");
+            });
+
+
+            if (videos.length === 0) {
+
+                videoList.innerHTML =
+                    "<p>🎬 No videos yet.</p>";
+
+                return;
+            }
+
+
+            for (let item of videos) {
+
+                let video =
+                    document.createElement("video");
+
+                video.src =
+                    URL.createObjectURL(item.file);
+
+                video.controls = true;
+
+                video.width = 400;
+
+                video.style.display = "block";
+
+                video.style.marginBottom = "20px";
+
+                videoList.appendChild(video);
+            }
+        }
+
+
+        function goHome() {
+            window.location.href = "home.html";
+        }
+
+
+        window.onload = function () {
+            showVideos();
+        };
+
+    </script>
+
+</body>
+
+</html>

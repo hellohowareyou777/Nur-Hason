@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Photos - Nur Hason</title>
+</head>
+
+<body>
+
+    <h1>🖼️ Photos</h1>
+
+    <h3>Select Photos:</h3>
+
+    <input type="file"
+           id="photoInput"
+           accept="image/*"
+           multiple>
+
+    <br><br>
+
+    <button onclick="savePhotos()">⬆️ Add Photos</button>
+
+    <p id="result"></p>
+
+    <hr>
+
+    <h3>Saved Photos</h3>
+
+    <div id="photoList"></div>
+
+    <br>
+
+    <button onclick="goHome()">🏠 Home</button>
+
+    <script src="storage.js"></script>
+
+    <script>
+
+        async function savePhotos() {
+
+            let input =
+                document.getElementById("photoInput");
+
+            let files = input.files;
+
+            if (files.length === 0) {
+
+                document.getElementById("result").innerText =
+                    "❌ আগে একটি photo নির্বাচন করুন।";
+
+                return;
+            }
+
+            for (let file of files) {
+                await saveFile(file);
+            }
+
+            document.getElementById("result").innerText =
+                "✅ Photos saved successfully.";
+
+            input.value = "";
+
+            showPhotos();
+        }
+
+
+        async function showPhotos() {
+
+            let photoList =
+                document.getElementById("photoList");
+
+            let files = await getAllFiles();
+
+            photoList.innerHTML = "";
+
+            let photos = files.filter(function (item) {
+                return item.type.startsWith("image/");
+            });
+
+
+            if (photos.length === 0) {
+
+                photoList.innerHTML =
+                    "<p>🖼️ No photos yet.</p>";
+
+                return;
+            }
+
+
+            for (let item of photos) {
+
+                let img =
+                    document.createElement("img");
+
+                img.src =
+                    URL.createObjectURL(item.file);
+
+                img.width = 250;
+
+                img.style.margin = "10px";
+
+                photoList.appendChild(img);
+            }
+        }
+
+
+        function goHome() {
+            window.location.href = "home.html";
+        }
+
+
+        window.onload = function () {
+            showPhotos();
+        };
+
+    </script>
+
+</body>
+
+</html>

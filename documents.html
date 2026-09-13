@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Documents - Nur Hason</title>
+</head>
+
+<body>
+
+    <h1>📄 Documents</h1>
+
+    <h3>Select Documents:</h3>
+
+    <input type="file"
+           id="documentInput"
+           accept=".pdf,.doc,.docx,.txt,.xls,.xlsx,.ppt,.pptx"
+           multiple>
+
+    <br><br>
+
+    <button onclick="saveDocuments()">⬆️ Add Documents</button>
+
+    <p id="result"></p>
+
+    <hr>
+
+    <h3>Saved Documents</h3>
+
+    <div id="documentList"></div>
+
+    <br>
+
+    <button onclick="goHome()">🏠 Home</button>
+
+    <script src="storage.js"></script>
+
+    <script>
+
+        async function saveDocuments() {
+
+            let input =
+                document.getElementById("documentInput");
+
+            let files = input.files;
+
+            if (files.length === 0) {
+
+                document.getElementById("result").innerText =
+                    "❌ আগে একটি document নির্বাচন করুন।";
+
+                return;
+            }
+
+            for (let file of files) {
+                await saveFile(file);
+            }
+
+            document.getElementById("result").innerText =
+                "✅ Documents saved successfully.";
+
+            input.value = "";
+
+            showDocuments();
+        }
+
+
+        async function showDocuments() {
+
+            let documentList =
+                document.getElementById("documentList");
+
+            let files = await getAllFiles();
+
+            documentList.innerHTML = "";
+
+            let documents = files.filter(function (item) {
+
+                return !item.type.startsWith("image/") &&
+                       !item.type.startsWith("video/");
+
+            });
+
+
+            if (documents.length === 0) {
+
+                documentList.innerHTML =
+                    "<p>📄 No documents yet.</p>";
+
+                return;
+            }
+
+
+            for (let item of documents) {
+
+                let div =
+                    document.createElement("div");
+
+                div.innerHTML =
+                    "📄 <strong>" +
+                    item.name +
+                    "</strong>" +
+                    "<br>" +
+                    "Size: " +
+                    Math.round(item.size / 1024) +
+                    " KB" +
+                    "<br><br>";
+
+                documentList.appendChild(div);
+            }
+        }
+
+
+        function goHome() {
+            window.location.href = "home.html";
+        }
+
+
+        window.onload = function () {
+            showDocuments();
+        };
+
+    </script>
+
+</body>
+
+</html>

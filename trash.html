@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Trash - Nur Hason</title>
+</head>
+
+<body>
+
+    <h1>🗑️ Trash</h1>
+
+    <p id="result"></p>
+
+    <div id="trashList"></div>
+
+    <br>
+
+    <button onclick="goHome()">🏠 Home</button>
+
+    <script src="storage.js"></script>
+
+    <script>
+
+        async function showTrash() {
+
+            let trashList =
+                document.getElementById("trashList");
+
+            let files =
+                await getTrashFiles();
+
+            trashList.innerHTML = "";
+
+            if (files.length === 0) {
+
+                trashList.innerHTML =
+                    "<p>🗑️ Trash is empty.</p>";
+
+                return;
+            }
+
+            for (let item of files) {
+
+                let div =
+                    document.createElement("div");
+
+                div.innerHTML =
+                    "📄 <strong>" +
+                    item.name +
+                    "</strong><br>" +
+                    "Size: " +
+                    Math.round(item.size / 1024) +
+                    " KB<br><br>";
+
+                let restoreButton =
+                    document.createElement("button");
+
+                restoreButton.innerText =
+                    "♻️ Restore";
+
+                restoreButton.onclick = async function () {
+
+                    await restoreFile(item.id);
+
+                    document.getElementById("result").innerText =
+                        "✅ File restored.";
+
+                    showTrash();
+                };
+
+                div.appendChild(restoreButton);
+
+                div.appendChild(
+                    document.createElement("hr")
+                );
+
+                trashList.appendChild(div);
+            }
+        }
+
+
+        function goHome() {
+            window.location.href = "home.html";
+        }
+
+
+        window.onload = function () {
+            showTrash();
+        };
+
+    </script>
+
+</body>
+
+</html>

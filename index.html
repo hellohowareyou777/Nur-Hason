@@ -1,0 +1,59 @@
+```html
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Nur Hason - Login</title>
+</head>
+
+<body>
+
+    <h1>☁️ Nur Hason</h1>
+
+    <h2>🔐 Login</h2>
+
+    <label>Username:</label>
+    <input type="text" id="username">
+
+    <br><br>
+
+    <label>Password:</label>
+    <input type="password" id="password">
+
+    <br><br>
+
+    <button onclick="login()">Login</button>
+
+    <p id="message"></p>
+
+    <script>
+        function login() {
+
+            const username =
+                document.getElementById("username").value;
+
+            const password =
+                document.getElementById("password").value;
+
+            if (username === "admin" && password === "1234") {
+
+                document.getElementById("message").innerText =
+                    "Login successful!";
+
+                setTimeout(function () {
+                    window.location.href = "home.html";
+                }, 500);
+
+            } else {
+
+                document.getElementById("message").innerText =
+                    "Invalid username or password.";
+
+            }
+        }
+    </script>
+
+</body>
+
+</html>
+```
