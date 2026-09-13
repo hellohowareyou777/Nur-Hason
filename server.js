@@ -2,11 +2,11 @@ const express = require("express");
 
 const app = express();
 
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 app.use(express.static(__dirname));
 
-app.listen(PORT, function () {
+app.listen(PORT, "0.0.0.0", function () {
     console.log("Nur Hason server is running.");
-    console.log("Open: http://localhost:" + PORT);
+    console.log("Open on port " + PORT);
 });
