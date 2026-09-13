@@ -1,0 +1,9 @@
+{
+  "name": "Nur Hason",
+  "short_name": "Nur Hason",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "description": "Nur Hason personal file storage"
+}
