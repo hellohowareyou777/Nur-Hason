@@ -1,17 +1,17 @@
 {
-"name": "Nur Hason",
-"short_name": "Nur Hason",
-"start_url": "/home.html",
-"scope": "/",
-"display": "standalone",
-"background_color": "#ffffff",
-"theme_color": "#ffffff",
-"description": "Nur Hason personal file storage",
-"icons": [
-{
-"src": "icon.png",
-"sizes": "512x512",
-"type": "image/png"
-}
-]
+  "name": "Nur Hason",
+  "short_name": "Nur Hason",
+  "start_url": "/home.html",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "description": "Nur Hason personal file storage",
+  "icons": [
+    {
+      "src": "icon.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
 }
